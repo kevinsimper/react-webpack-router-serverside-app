@@ -8,6 +8,11 @@
 <body>
   <div id="main"><%= content %></div>
   <link rel="stylesheet" href="/build/main.css" charset="utf-8">
-  <script src="/build/bundle.js"></script>
+  <% if(production) { %>
+    <script src="/build/bundle.js"></script>
+  <% } else { %>
+    <script src="http://localhost:8080/webpack-dev-server.js"></script>
+    <script src="http://localhost:8080/build/bundle.js"></script>
+  <% } %>
 </body>
 </html>

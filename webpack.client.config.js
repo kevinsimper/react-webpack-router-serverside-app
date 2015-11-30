@@ -1,6 +1,21 @@
 var webpack = require('webpack')
 var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
+var plugins = []
+
+if(process.env.NODE_ENV === 'production') {
+  plugins.push(
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+          warnings: false
+      }
+    }),
+    new ExtractTextPlugin("[name].css")
+  )
+}
+
 module.exports = {
   entry: './app/client.js',
   output: {
@@ -28,15 +43,6 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-          warnings: false
-      }
-    }),
-    new ExtractTextPlugin("[name].css")
-  ],
+  plugins: plugins,
   devtool: 'source-map'
 }
