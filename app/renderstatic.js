@@ -8,6 +8,20 @@ export default function (req, cb) {
     routes: routes,
     location: req.url
   }, (error, redirectLocation, renderProps) => {
-    cb(renderToString(<RoutingContext {...renderProps} />))
+    if(error) {
+      cb(error)
+    } else if(redirectLocation) {
+      cb(null, {
+        redirectLocation: redirectLocation
+      })
+    } else if(renderProps) {
+      cb(null, {
+        html: renderToString(<RoutingContext {...renderProps} />)
+      })
+    } else {
+      cb(null, {
+        status: 'not found'
+      })
+    }
   })
 }
